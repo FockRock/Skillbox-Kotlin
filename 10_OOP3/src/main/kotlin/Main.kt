@@ -1,9 +1,6 @@
 fun main() {
 
     val usdConverter: CurrencyConverter? = Converters.get("USD")
-    val eurConverter: CurrencyConverter? = Converters.get("EUR")
-    val gpdConverter: CurrencyConverter? = Converters.get("GPD")
-    val uahConverter: CurrencyConverter? = Converters.get("UAH")
 
     if (usdConverter != null) {
         println("How much RUB you want to convert to ${usdConverter.currencyCode}")
@@ -11,11 +8,15 @@ fun main() {
         println("$i RUB = ${usdConverter.convertToRub(i)} ${usdConverter.currencyCode}")
     }
 
+    val eurConverter: CurrencyConverter? = Converters.get("EUR")
+
     if (eurConverter != null) {
         println("How much RUB you want to convert to ${eurConverter.currencyCode}")
         val i = readLine()?.toInt() ?:return
         println("$i RUB = ${eurConverter.convertToRub(i)} ${eurConverter.currencyCode}")
     }
+
+    val gpdConverter: CurrencyConverter? = Converters.get("GPD")
 
     if (gpdConverter != null) {
         println("How much RUB you want to convert to ${gpdConverter.currencyCode}")
@@ -23,9 +24,13 @@ fun main() {
         println("$i RUB = ${gpdConverter.convertToRub(i)} ${gpdConverter.currencyCode}")
     }
 
-    if (uahConverter != null) {
-        println("How much RUB you want to convert to ${uahConverter.currencyCode}")
+    println("What currency you want to convert?")
+    val currencyName = readLine().toString()
+    val otherConverter: CurrencyConverter? = Converters.get(currencyName)
+
+    if (otherConverter != null) {
+        println("How much RUB you want to convert to ${otherConverter.currencyCode}")
         val i = readLine()?.toInt() ?:return
-        println("$i RUB = ${uahConverter.convertToRub(i)} ${uahConverter.currencyCode}")
+        println("$i RUB = ${otherConverter.convertToRub(i)} ${otherConverter.currencyCode}")
     }
 }

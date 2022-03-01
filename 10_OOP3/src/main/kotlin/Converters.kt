@@ -1,5 +1,3 @@
-import java.util.*
-
 object Converters{
     private val converterMap = mapOf("EUR" to Euro(), "USD" to Dollar(), "GPD" to Pound())
 
