@@ -5,5 +5,4 @@ object SingleShot : FireType()
 data class Burst(
     val rounds: Int
 ) : FireType(){
-    var ro = rounds
 }

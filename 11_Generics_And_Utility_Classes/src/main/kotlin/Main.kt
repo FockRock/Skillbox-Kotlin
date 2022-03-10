@@ -1,6 +1,6 @@
 fun main() {
 
-    val a = AbstractWeapon(12, Burst(5), Ammo.RIFLE_BULLET, Stack())
+    val a = Weapons.createRifle()
     a.reload()
     a.load()
 }
