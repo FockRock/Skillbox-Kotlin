@@ -1,3 +1,5 @@
+import kotlin.random.Random
+
 class Stack<T> {
     private val mL: MutableList<T> = mutableListOf()
 
@@ -8,7 +10,7 @@ class Stack<T> {
 
     fun pop(): T? =
         if (mL.isNotEmpty()) {
-            println("Element ${mL[mL.size-1]} deleted")
+            println("Element ${mL[mL.size-1]} loaded")
             mL.removeAt(mL.size-1)
         } else null
 
@@ -23,4 +25,9 @@ class Stack<T> {
             a++
         }
     }
+}
+
+fun Int.chance(): Boolean {
+    val a = Random.nextInt(100)
+    return this <= a
 }
