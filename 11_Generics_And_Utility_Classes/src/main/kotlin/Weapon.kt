@@ -8,7 +8,7 @@ object Weapons {
     }
 
     fun createRifle(): AbstractWeapon {
-        return AbstractWeapon(15,Burst(3),Ammo.RIFLE_BULLET,Stack())
+        return AbstractWeapon(15,Burst(),Ammo.RIFLE_BULLET,Stack())
     }
 
     fun createGrenadeLauncher(): AbstractWeapon {

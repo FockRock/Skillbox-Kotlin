@@ -8,7 +8,7 @@ enum class Ammo(
     RIFLE_BULLET(20, 8, 4),
     GRENADE(50, 20, 10);
 
-    fun takeDamage(): Int {
+    fun takesDamage(): Int {
         val a = criticalChance.chance()
         return if (a) damage else damage * criticalDamage
     }

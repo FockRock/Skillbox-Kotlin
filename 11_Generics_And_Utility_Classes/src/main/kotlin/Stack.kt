@@ -4,13 +4,13 @@ class Stack<T> {
     private val mL: MutableList<T> = mutableListOf()
 
     fun push(item: T) {
-        println("Element $item added")
+        println("Element $item added to clip")
         mL.add(item)
     }
 
     fun pop(): T? =
         if (mL.isNotEmpty()) {
-            println("Element ${mL[mL.size-1]} loaded")
+            println("Element ${mL[mL.size-1]} ready for fire")
             mL.removeAt(mL.size-1)
         } else null
 

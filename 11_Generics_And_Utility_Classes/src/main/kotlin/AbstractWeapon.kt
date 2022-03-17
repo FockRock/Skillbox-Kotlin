@@ -1,7 +1,7 @@
 class AbstractWeapon(
-    val maxRounds: Int,
-    val fireType: FireType,
-    val ammo: Ammo,
+    private val maxRounds: Int,
+    private val fireType: FireType,
+    private val ammo: Ammo,
     val clip: Stack<Ammo>
 ) {
     private fun makeBullet(): Ammo {
@@ -25,8 +25,15 @@ class AbstractWeapon(
 
     fun load(): List<Ammo?> {
         val bulletsForFire = mutableListOf<Ammo?>()
-        bulletsForFire.add(clip.pop())
-
+        if (fireType == SingleShot) {
+            bulletsForFire.add(clip.pop())
+        } else if (fireType == Burst()) {
+            var i = 0
+            while (i != Burst().rounds) {
+                bulletsForFire.add(clip.pop())
+                i++
+            }
+        }
         return bulletsForFire.toList()
     }
 }
