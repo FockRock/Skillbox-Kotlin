@@ -1,10 +1,11 @@
 import kotlin.random.Random
 
-class Team (
+class Team(
     numberOfSoldiers: Int
-    ){
+) {
+    var soldiers: MutableList<AbstractWarrior> = mutableListOf()
+
     init {
-        val soldiers: MutableList<AbstractWarrior> = mutableListOf()
         var i = 0
         while (i != numberOfSoldiers) {
             when (Random.nextInt(100)) {
@@ -25,4 +26,14 @@ class Team (
         }
         println(soldiers)
     }
+
+    fun currentHealth(): Int {
+        var health = 0
+        soldiers.forEach {
+            health += it.hp
+        }
+        return health
+    }
+
+    fun currentWarriors() = soldiers.size
 }

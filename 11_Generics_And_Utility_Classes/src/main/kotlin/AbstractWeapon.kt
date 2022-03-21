@@ -20,10 +20,12 @@ class AbstractWeapon(
             clip.push(makeBullet())
             i++
         }
+        println("Weapon reloaded")
+        println()
         return clip
     }
 
-    fun load(): List<Ammo?> {
+    fun load(): MutableList<Ammo?> {
         val bulletsForFire = mutableListOf<Ammo?>()
         if (fireType == SingleShot) {
             bulletsForFire.add(clip.pop())
@@ -34,6 +36,6 @@ class AbstractWeapon(
                 i++
             }
         }
-        return bulletsForFire.toList()
+        return bulletsForFire
     }
 }

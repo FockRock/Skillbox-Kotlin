@@ -16,8 +16,7 @@ open class AbstractWarrior(
                 bullets.forEach {
                     if (accuracy > enemy.chanceToDodge) {
                         val damage: Int? = it?.takesDamage()
-                        weapon.clip.pop()
-                        println("Bullets damage ${it?.takesDamage()}")
+                        println("Bullets damage $damage")
                         enemy.hp = enemy.hp - damage!!
                         if (enemy.hp > 0) {
                             println("Enemy HP is now ${enemy.hp}")
