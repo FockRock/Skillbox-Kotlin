@@ -30,50 +30,54 @@ class Battle(
     }
 
 
-    fun battleIteration() {
-        if (battleResult == BattleState.Progress) {
-            firstTeam.soldiers.shuffle()
-            secondTeam.soldiers.shuffle()
+    fun battleIteration(iteration: Int) {
+        var a = 0
+        while (a != iteration) {
+            if (battleResult == BattleState.Progress) {
+                firstTeam.soldiers.shuffle()
+                secondTeam.soldiers.shuffle()
 
-            val firstTeamDeadList = mutableListOf<AbstractWarrior>()
-            val secondTeamDeadList = mutableListOf<AbstractWarrior>()
+                val firstTeamDeadList = mutableListOf<AbstractWarrior>()
+                val secondTeamDeadList = mutableListOf<AbstractWarrior>()
 
-            var i = 0
-            while (i != firstTeam.currentWarriors() && i != secondTeam.currentWarriors()) {
+                var i = 0
+                while (i != firstTeam.currentWarriors() && i != secondTeam.currentWarriors()) {
 
-                val randomInt = Random.nextInt(0,2)
+                    val randomInt = Random.nextInt(0, 2)
 
-                if (randomInt == 0) {
-                    println("Soldier from team 1 attacking first:")
-                    firstTeam.soldiers[i].attack(secondTeam.soldiers[i])
-                } else {
-                    println("Soldier from team 2 attacking first:")
-                    secondTeam.soldiers[i].attack(firstTeam.soldiers[i])
-                }
-
-                if (randomInt == 0) {
-                    if (!secondTeam.soldiers[i].isKilled) {
-                        println("Soldier from team 2 attacking second:")
-                        secondTeam.soldiers[i].attack(firstTeam.soldiers[i])
-                    } else println("Soldier from team 2 is dead")
-                } else {
-                    if (!firstTeam.soldiers[i].isKilled) {
-                        println("Soldier from team 1 attacking second:")
+                    if (randomInt == 0) {
+                        println("Soldier from team 1 attacking first:")
                         firstTeam.soldiers[i].attack(secondTeam.soldiers[i])
-                    } else println("Soldier from team 1 is dead")
-                }
+                    } else {
+                        println("Soldier from team 2 attacking first:")
+                        secondTeam.soldiers[i].attack(firstTeam.soldiers[i])
+                    }
 
-                if (secondTeam.soldiers[i].isKilled) {
-                    secondTeamDeadList.add(secondTeam.soldiers[i])
+                    if (randomInt == 0) {
+                        if (!secondTeam.soldiers[i].isKilled) {
+                            println("Soldier from team 2 attacking second:")
+                            secondTeam.soldiers[i].attack(firstTeam.soldiers[i])
+                        } else println("Soldier from team 2 is dead")
+                    } else {
+                        if (!firstTeam.soldiers[i].isKilled) {
+                            println("Soldier from team 1 attacking second:")
+                            firstTeam.soldiers[i].attack(secondTeam.soldiers[i])
+                        } else println("Soldier from team 1 is dead")
+                    }
+
+                    if (secondTeam.soldiers[i].isKilled) {
+                        secondTeamDeadList.add(secondTeam.soldiers[i])
+                    }
+                    if (firstTeam.soldiers[i].isKilled) {
+                        firstTeamDeadList.add(firstTeam.soldiers[i])
+                    }
+                    i++
                 }
-                if (firstTeam.soldiers[i].isKilled) {
-                    firstTeamDeadList.add(firstTeam.soldiers[i])
-                }
-                i++
+                firstTeam.soldiers.removeAll(firstTeamDeadList)
+                secondTeam.soldiers.removeAll(secondTeamDeadList)
+                battleStatus()
             }
-            firstTeam.soldiers.removeAll(firstTeamDeadList)
-            secondTeam.soldiers.removeAll(secondTeamDeadList)
-            battleStatus()
+            a++
         }
     }
 }
