@@ -9,9 +9,7 @@ open class AbstractWarrior(
 
     override fun attack(enemy: AbstractWarrior) {
         if (enemy.hp > 0) {
-            if (weapon.clip.isEmpty()) {
-                weapon.reload()
-            } else {
+            try {
                 val bullets = weapon.load()
                 bullets.forEach {
                     if (accuracy > enemy.chanceToDodge) {
@@ -27,6 +25,9 @@ open class AbstractWarrior(
                         }
                     }
                 }
+            } catch (e: NoAmmoException) {
+                println("${NoAmmoException().message}")
+                weapon.reload()
             }
         } else println("Enemy already dead!")
     }

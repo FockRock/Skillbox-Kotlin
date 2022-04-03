@@ -27,15 +27,17 @@ class AbstractWeapon(
 
     fun load(): MutableList<Ammo?> {
         val bulletsForFire = mutableListOf<Ammo?>()
-        if (fireType == SingleShot) {
+        val bulletsInClip = clip.count()
+
+        if (fireType == SingleShot && bulletsInClip >= 1) {
             bulletsForFire.add(clip.pop())
-        } else if (fireType == Burst()) {
+        } else if (fireType == Burst() && bulletsInClip >= 3) {
             var i = 0
             while (i != Burst().rounds) {
                 bulletsForFire.add(clip.pop())
                 i++
             }
-        }
+        } else throw NoAmmoException()
         return bulletsForFire
     }
 }

@@ -18,12 +18,13 @@ class Stack<T> {
         return mL.isEmpty()
     }
 
-    fun count() {
+    fun count(): Int {
         var a = 0
         while (a != mL.size) {
-            println(mL[a])
             a++
         }
+        println("Clip has $a bullets")
+        return a
     }
 }
 
@@ -31,3 +32,5 @@ fun Int.chance(): Boolean {
     val a = Random.nextInt(100)
     return this <= a
 }
+
+class NoAmmoException: Throwable("You have no ammo")
