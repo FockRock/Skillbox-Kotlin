@@ -19,51 +19,54 @@ fun main() {
     numberThree = check(numberThree)
 
     runBlocking {
-        val scope = CoroutineScope(this.coroutineContext)
+
+        val scope = CoroutineScope(Dispatchers.Default)
+        val job1 = launch {
+            try {
+                withTimeout(6000) {
+                    yield()
+                    val fibOne = Fibonacci.take(numberOne)
+                    yield()
+                    println("$numberOne number in Fibonacci sequence is $fibOne")
+                }
+            } catch (t: TimeoutCancellationException) {
+                println("Calculation was too long!")
+            }
+        }
+
+        val job2 = launch {
+            try {
+                withTimeout(6000) {
+                    yield()
+                    val fibTwo = Fibonacci.take(numberTwo)
+                    yield()
+                    println("$numberTwo number in Fibonacci sequence is $fibTwo")
+                }
+            } catch (t: TimeoutCancellationException) {
+                println("Calculation was too long!")
+            }
+        }
+
+        val job3 = launch {
+            try {
+                withTimeout(6000) {
+                    yield()
+                    val fibThree = Fibonacci.take(numberThree)
+                    yield()
+                    println("$numberThree number in Fibonacci sequence is $fibThree")
+                }
+            } catch (t: TimeoutCancellationException) {
+                println("Calculation was too long!")
+            }
+        }
+
 
         scope.launch {
-            while (coroutineContext.isActive){
-                delay(100)
+            while (job1.isActive || job2.isActive || job3.isActive){
+                delay(10)
                 print(".")
             }
         }
-
-        scope.launch {
-            try {
-                withTimeout(3000) {
-                    yield()
-                    val fibOne = Fibonacci.take(numberOne)
-                    println("$numberOne number in Fibonacci sequence is $fibOne")
-                }
-            } catch (t: Throwable) {
-                println("Calculation was too long!")
-            }
-        }
-
-        scope.launch {
-            try {
-                withTimeout(3000) {
-                    yield()
-                    val fibTwo = Fibonacci.take(numberTwo)
-                    println("$numberTwo number in Fibonacci sequence is $fibTwo")
-                }
-            } catch (t: Throwable) {
-                println("Calculation was too long!")
-            }
-        }
-
-        scope.launch {
-            try {
-                withTimeout(3000) {
-                    yield()
-                    val fibThree = Fibonacci.take(numberThree)
-                    println("$numberThree number in Fibonacci sequence is $fibThree")
-                }
-            } catch (t: Throwable) {
-                println("Calculation was too long!")
-            }
-        }
-
     }
 }
 
@@ -103,6 +106,8 @@ object Fibonacci {
                     }
                 }
             }
+        } else {
+            println("Time is over!!")
         }
         return f
     }
