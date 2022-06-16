@@ -103,6 +103,7 @@ object Fibonacci {
                         }
                         f = f1 + f2
                         i++
+                        yield()
                     }
                 }
             }
