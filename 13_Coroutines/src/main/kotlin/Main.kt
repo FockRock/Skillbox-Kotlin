@@ -1,115 +1,103 @@
 import kotlinx.coroutines.*
 import java.math.BigInteger
-import kotlin.concurrent.thread
-import kotlin.coroutines.coroutineContext
-import kotlin.random.Random
-import kotlin.system.measureTimeMillis
+import kotlin.coroutines.CoroutineContext
 
-fun main() {
-    println("Enter First number:")
-    var numberOne = readLine()!!.toInt()
-    numberOne = check(numberOne)
+fun main(): Unit = runBlocking {
+    var n1 = 0.toBigInteger()
+    var n2 = 0.toBigInteger()
+    var n3 = 0.toBigInteger()
 
-    println("Enter Second number:")
-    var numberTwo = readLine()!!.toInt()
-    numberTwo = check(numberTwo)
-
-    println("Enter Third number:")
-    var numberThree = readLine()!!.toInt()
-    numberThree = check(numberThree)
-
-    runBlocking {
-
-        val scope = CoroutineScope(Dispatchers.Default)
-        val job1 = launch {
+    val job1 = launch {
+        println("Введите первое число:")
+        var number = readLine()!!.toInt()
+        number = check(number)
+        withTimeout(10000) {
             try {
-                withTimeout(6000) {
-                    yield()
-                    val fibOne = Fibonacci.take(numberOne)
-                    yield()
-                    println("$numberOne number in Fibonacci sequence is $fibOne")
-                }
-            } catch (t: TimeoutCancellationException) {
-                println("Calculation was too long!")
+                n1 = Fibonacci.take(number)!!
+            } catch (t: Throwable) {
             }
+            cancel()
         }
+    }
 
-        val job2 = launch {
+    val job2 = launch {
+        println("Введите второе число:")
+        var number = readLine()!!.toInt()
+        number = check(number)
+        withTimeout(10000) {
             try {
-                withTimeout(6000) {
-                    yield()
-                    val fibTwo = Fibonacci.take(numberTwo)
-                    yield()
-                    println("$numberTwo number in Fibonacci sequence is $fibTwo")
-                }
-            } catch (t: TimeoutCancellationException) {
-                println("Calculation was too long!")
-            }
-        }
+                n2 = Fibonacci.take(number)!!
 
-        val job3 = launch {
+            } catch (t: Throwable) {
+
+            }
+            cancel()
+        }
+    }
+
+    val job3 = launch {
+        println("Введите третье число:")
+        var number = readLine()!!.toInt()
+        number = check(number)
+        withTimeout(10000) {
             try {
-                withTimeout(6000) {
-                    yield()
-                    val fibThree = Fibonacci.take(numberThree)
-                    yield()
-                    println("$numberThree number in Fibonacci sequence is $fibThree")
+                n3 = Fibonacci.take(number)!!
+
+            } catch (t: Throwable) {
+            }
+            cancel()
+        }
+    }
+
+    launch {
+        println("Начинается расчет чисел")
+        while (job1.isActive || job2.isActive || job3.isActive) {
+            print(".")
+            delay(50)
+        }
+        println()
+        if (n1 > 0.toBigInteger()) println("Первое число в последовательности Фибоначчи $n1")
+        else println("Первое число не посчитано, ожидание было слишком долгим")
+        if (n2 > 0.toBigInteger()) println("Второе число в последовательности Фибоначчи $n2")
+        else println("Второе число не посчитано, ожидание было слишком долгим")
+        if (n3 > 0.toBigInteger()) println("Третье число в последовательности Фибоначчи $n3")
+        else println("Третье число не посчитано, ожидание было слишком долгим")
+    }
+}
+
+object Fibonacci {
+    suspend fun take(n: Int): BigInteger? {
+        if (currentCoroutineContext().isActive) {
+            var fib = 1.toBigInteger()
+            var i = 2
+            var a = 1.toBigInteger()
+            var b = a
+
+            if (n == 1 || n == 2) fib = 1.toBigInteger()
+            else {
+                while (i != n) {
+                    delay(100)
+                    fib = a + b
+                    if (a > b) b = fib
+                    else a = fib
+                    i++
                 }
-            } catch (t: TimeoutCancellationException) {
-                println("Calculation was too long!")
-            }
-        }
 
-
-        scope.launch {
-            while (job1.isActive || job2.isActive || job3.isActive){
-                delay(10)
-                print(".")
             }
-        }
+            return fib
+        } else return null
     }
 }
 
 fun check(n: Int): Int {
-    var number = n
-    while (number < 0) {
-        println("Enter another number!")
-        number = readLine()!!.toInt()
-    }
-    println("Your number is $number")
-    return number
-}
-
-object Fibonacci {
-
-    suspend fun take(n: Int): BigInteger {
-        var f = 0.toBigInteger()
-        if (currentCoroutineContext().isActive) {
-            var f1 = 0.toBigInteger()
-            var f2 = 1.toBigInteger()
-            var i = 2
-
-            println("Thread start: ${Thread.currentThread().name}")
-            when (n) {
-                0 -> f = 0.toBigInteger()
-                1 -> f = 1.toBigInteger()
-                2 -> f = 1.toBigInteger()
-                else -> {
-                    while (i != n) {
-                        if (f2 > f1) {
-                            f1 = f
-                        } else {
-                            f2 = f
-                        }
-                        f = f1 + f2
-                        i++
-                        yield()
-                    }
-                }
-            }
-        } else {
-            println("Time is over!!")
+    var num = n
+    if (num > 0) {
+    } else {
+        while (num < 1) {
+            println("Введите корректное число!")
+            val a = readLine()!!.toInt()
+            num = a
         }
-        return f
     }
+    return num
 }
